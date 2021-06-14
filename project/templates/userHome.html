@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} User | Home {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/userHome.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <script>alert("{{ message }}")</script>
+    {% endfor %}
+{% endif %}
+
+<br>
+<h1 align="center">Users</h1>
+<br>
+<table class="table table-warning table-striped" align="center">
+    <tr class="table-dark">
+        <th width="200">Username</th>
+        <th width="400">Email</th>
+        <th width="500">Address</th>
+        <th width="200">Actions</th>
+    </tr>
+    {% if obj %}
+        {% for i in obj %}
+            {% if i.email == query %}
+                <form action="{% url 'UpdateUser' i.email %}" method="post">
+                {% csrf_token %}
+                <tr>
+                    <td>{{ form.username }}</td>
+                    <td>{{ form.email }}</td>
+                    <td>{{ form.address }}</td>
+                    <td align="center"><button type="submit" class="btn btn-primary">Submit</button></td>
+                </tr>
+                </form>
+            {% else %}
+                <tr>
+                    <td>{{ i.username }}</td>
+                    <td>{{ i.email }}</td>
+                    <td>{{ i.address }}</td>
+                    <td align="center">
+                        <a href="{% url 'UpdateUser' i.email %}"><button class="btn btn-success">Edit</button></a> &emsp;
+                        <a href="{% url 'DeleteUser' i.email %}"><button class="btn btn-danger">Delete</button></a>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="4" align="center">No User Records Available</td>
+        </tr>
+    {% endif %}
+</table>
+<br>
+<div align="center">
+    <a href="{% url 'Logout' %}"><button type="button" class="btn btn-secondary">Log Out</button></a>
+</div>
+
+{% endblock %}

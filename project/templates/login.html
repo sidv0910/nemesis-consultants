@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Login {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <script>alert("{{ message }}")</script>
+    {% endfor %}
+{% endif %}
+
+<div class="login-form">
+    <form action="{% url 'Login' %}" method="post">
+        <h2 class="text-center">Login</h2> <br>
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.email }} <br>
+        </div>
+        <div class="form-group">
+            {{ form.password }} <br>
+        </div>
+        <div class="form-group" align="center">
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </div>
+    </form>
+    <br>
+    <div class="clearfix" align="center">
+        Don't have an account? <a href="{% url 'SignUp' %}">Sign Up</a>
+    </div>
+</div>
+
+{% endblock %}
